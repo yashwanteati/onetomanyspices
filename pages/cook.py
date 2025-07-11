@@ -13,8 +13,8 @@ def img_to_base64(img_path):
     return None
 
 # ---------------- Logo and Tagline Setup ----------------
-logo_left = img_to_base64("otms_assets/logo_dark.png")
-logo_right = img_to_base64("otms_assets/logo_dark.png")
+logo_left = img_to_base64("otms_assets/otms_logo_dark.png")
+logo_right = img_to_base64("otms_assets/otms_logo_dark.png")
 
 col1, col2, col3 = st.columns([1, 4, 1])
 with col1:
