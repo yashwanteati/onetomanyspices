@@ -1,6 +1,13 @@
+# Python
 __pycache__/
 *.pyc
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Environment files
 .env
-.otms_env/
-.vscode
+*.sqlite3
+
+# macOS
 .DS_Store

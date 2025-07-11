@@ -4,83 +4,94 @@ from pathlib import Path
 
 st.set_page_config(page_title="One to Many Spices", layout="wide")
 
-# -------------------- Hide Sidebar --------------------
+# ---------------- CSS Styling ----------------
 st.markdown("""
     <style>
     [data-testid="stSidebar"] {
         display: none;
     }
+
     .button-img {
         border-radius: 20px;
-        box-shadow: 0px 6px 15px rgba(0,0,0,0.2);
-        transition: transform 0.2s ease-in-out;
+        transition: transform 0.3s ease-in-out;
         cursor: pointer;
     }
+
     .button-img:hover {
-        transform: scale(1.05);
-        box-shadow: 0px 12px 20px rgba(0,0,0,0.3);
+        transform: scale(1.1);
+    }
+
+    .menu-button {
+        text-align: center;
+        margin-top: 20px;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# -------------------- Function: Convert Image to base64 --------------------
+# ---------------- Image Conversion ----------------
 def img_to_base64(path):
-    image_bytes = Path(path).read_bytes()
-    return base64.b64encode(image_bytes).decode()
-
-# -------------------- Display Logos (Left and Right) --------------------
-col1, col2, col3 = st.columns([1, 6, 1])
-with col1:
     try:
-        st.image("assets/otms_logo.png", width=1000)
-    except:
-        st.warning("Left logo not found")
+        image_bytes = Path(path).read_bytes()
+        return base64.b64encode(image_bytes).decode()
+    except Exception:
+        return ""
 
-with col3:
-    try:
-        st.image("assets/cookfinity_logo.png", width=1000)
-    except:
-        st.warning("Right logo not found")
+# ---------------- Header Section (Logos + Title) ----------------
+header_cols = st.columns([1, 4, 1])
+with header_cols[0]:
+    st.image("otms_assets/otms_logo_light.png", use_container_width=True)
 
-# -------------------- Title and Tagline --------------------
-st.markdown("""
-<div style='text-align: center; margin-top: -40px;'>
-    <h1 style='font-size: 48px;'>ONE TO MANY</h1>
-    <h2 style='letter-spacing: 12px; margin-top: -20px;'>SPICES</h2>
-    <h4 style='font-size: 20px;'>
-        <span style='color: #E63946;'>CREATE</span> 
-        <span style='color: #F4A261;'>RECIPES</span> 
-        <span style='color: #000000;'>THAT</span> 
-        <span style='color: #2A9D8F;'>LET MEMORIES LAST</span>
-    </h4>
-</div>
-""", unsafe_allow_html=True)
+with header_cols[1]:
+    st.markdown("""
+        <div style='text-align: center; margin-top: 05px;'>
+            <h1 style='font-size: 52px; margin-bottom: 5px;'>ONE TO MANY</h1>
+            <h2 style='letter-spacing: 14px; font-size: 30px; margin-top: -20px;'>S   P   I   C   E   S</h2>
+            <h4 style='font-size: 22px; margin-top: 12px;'>
+                <span style='color: #FF3C38; margin-right: 12px;'>CREATE</span> 
+                <span style='color: #FDCB52; margin-right: 12px;'>RECIPES</span> 
+                <span style='color: #2ECC71; margin-right: 12px;'>THAT</span> 
+                <span style='color: #FF3C38;'>LET</span>
+                <span style='color: #FDCB52;'>MEMORIES</span>
+                <span style='color: #2ECC71;'>LAST</span>
+            </h4>
+            <h5 style='letter-spacing: 10px; font-size: 30px; margin-top: -10px;color: #C7AF6Bs;'>WORLD'S FIRST ONE STOP FOOD APP</h5>
 
-# -------------------- Clickable Image Buttons --------------------
+        </div>
+    """, unsafe_allow_html=True)
+
+with header_cols[2]:
+    st.image("otms_assets/cookfinity_logo_light.png", use_container_width=True)
+
+# ---------------- Button Config ----------------
 buttons = [
-    {"label": "LEARN", "image": "assets/icon_learn.png", "target": "learn"},
-    {"label": "COOK", "image": "assets/icon_cook.png", "target": "cook"},
-    {"label": "SHOP", "image": "assets/icon_shop.png", "target": "shop"},
-    {"label": "CREATE", "image": "assets/icon_create.png", "target": "create"},
-    {"label": "ENGAGE", "image": "assets/icon_engage.png", "target": "engage"},
+    {"label": "LEARN", "image": "otms_assets/learn.png", "page": "learn"},
+    {"label": "COOK", "image": "otms_assets/cook.png", "page": "cook"},
+    {"label": "SHOP", "image": "otms_assets/shop.png", "page": "shop"},
+    {"label": "CREATE", "image": "otms_assets/create.png", "page": "create"},
+    {"label": "ENGAGE", "image": "otms_assets/engage.png", "page": "engage"},
 ]
 
-cols = st.columns(5)
-
-for col, btn in zip(cols, buttons):
+# ---------------- Render 3D Icon Buttons ----------------
+img_cols = st.columns(5)
+for col, btn in zip(img_cols, buttons):
     with col:
-        try:
-            b64_img = img_to_base64(btn["image"])
-            col.markdown(f"""
-                <a href="{btn['target']}.py">
-                    <img src="data:image/png;base64,{b64_img}" class="button-img" style="width: 100%; max-width: 160px;">
-                </a>
-            """, unsafe_allow_html=True)
-        except FileNotFoundError:
-            st.error(f"Image not found: {btn['image']}")
+        b64_img = img_to_base64(btn["image"])
+        if b64_img:
+            col.markdown(
+                f"""
+                <div class="menu-button">
+                    <a href="/{btn['page']}" target="_self">
+                        <img src="data:image/png;base64,{b64_img}" class="button-img" style="height: 250px; width: 250px; object-fit: cover;">
+                    </a>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+        else:
+            st.warning(f"Image not found: {btn['image']}")
 
-# -------------------- Email Subscription --------------------
-st.markdown("---")
+# ---------------- Email Subscription ----------------
+st.markdown("<br><hr>", unsafe_allow_html=True)
 st.markdown("<h3 style='text-align: center;'>📬 Stay Updated</h3>", unsafe_allow_html=True)
 email = st.text_input("Enter your email to subscribe:")
 if st.button("Subscribe"):
