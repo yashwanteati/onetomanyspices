@@ -14,3 +14,7 @@ __pycache__/
 
 # Virtual environments
 otms_env/
+lib/
+bin/
+etc/
+share/
