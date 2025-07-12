@@ -58,4 +58,4 @@ tzdata==2025.2
 urllib3==2.5.0
 yarl==1.20.1
 streamlit
-openai==1.13.3
+openai
