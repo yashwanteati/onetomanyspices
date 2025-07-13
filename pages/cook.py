@@ -143,7 +143,6 @@ if st.button("🍳 Generate Recipe"):
         st.error("Please enter a dish name to generate the recipe.")
     else:
         display_rotating_loader(duration=6)
-        st.write("✅ API Key loaded:", bool(openai.api_key))
 
         openai.api_key = st.secrets["openai"]["api_key"]
 
