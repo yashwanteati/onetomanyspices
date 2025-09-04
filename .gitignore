@@ -1,20 +1,9 @@
-# Python
 __pycache__/
 *.pyc
-
-# Streamlit
-.streamlit/secrets.toml
-
-# Environment files
+.venv/
 .env
-*.sqlite3
-
-# macOS
 .DS_Store
-
-# Virtual environments
-otms_env/
-lib/
+Thumbs.db
+.streamlit/secrets.toml
 bin/
-etc/
-share/
+get-pip.py
