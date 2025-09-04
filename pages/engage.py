@@ -1,196 +1,171 @@
 import streamlit as st
-import base64
 from pathlib import Path
+import base64
 
-# ---------------- Page Config ----------------
 st.set_page_config(page_title="Engage | One to Many Spices", layout="wide")
 
-# ---------------- CSS Styling ----------------
+# ---- CSS: Sidebar hidden, clean look, top bar layout ----
 st.markdown("""
     <style>
-    [data-testid="stSidebar"] {
-        display: none;
+    body, .stApp, .block-container { background: #111 !important; }
+    [data-testid="stSidebar"] { display: none !important; }
+    .otms-header-bar {
+        display: flex; align-items: center; justify-content: space-between;
+        width: 100vw; max-width: 100vw;
+        margin-left: -2.2rem; margin-right: -2.2rem; margin-top: -1.8rem;
+        padding: 0 42px 0 42px;
+        min-height: 90px;
     }
-
-    .hero {
-        background: linear-gradient(90deg, #ffddb0, #ffe6cc);
-        padding: 2rem;
-        border-radius: 25px;
-        text-align: center;
-        margin-bottom: 2rem;
+    .otms-header-left {
+        display: flex; align-items: center;
     }
-
-    .hero h1 {
-        font-size: 3rem;
-        color: #b3541e;
-        margin-bottom: 0.5rem;
+    .cookfinity-logo {
+        width: 82px; height: 82px; object-fit: contain;
+        background: transparent;
+        margin-right: 24px;
+        margin-left: 10px;
     }
-
-    .hero p {
-        font-size: 1.2rem;
-        color: #333;
-        font-style: italic;
-    }
-
-    .section {
-        background-color: #fff9f0;
-        padding: 2rem;
-        border-radius: 20px;
-        margin-bottom: 2rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    }
-
-    .section h3 {
-        font-size: 1.8rem;
-        color: #a64b2a;
-    }
-
-    .upload-box {
-        border: 2px dashed #ffa94d;
-        padding: 2rem;
-        border-radius: 15px;
-        background-color: #fffdf8;
-        text-align: center;
-    }
-
-    .upload-box p {
-        margin-top: 1rem;
-        color: #555;
-    }
-
-    .social-links a {
-        font-weight: bold;
-        color: #b3541e !important;
-    }
-
-    .carousel-img {
-        height: 300px;
-        border-radius: 20px;
-        margin-top: 1rem;
+    .story-avatar {
+        width: 75px; height: 75px; border-radius: 50%;
+        border: 4px solid #fff; margin-right: 16px;
         object-fit: cover;
+        box-shadow: 0 2px 8px #0007;
+        transition: transform 0.18s;
     }
-
-    .auth-box {
-        background-color: #ffe9db;
-        padding: 2rem;
-        border-radius: 20px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    .story-avatar:hover { transform: scale(1.09);}
+    .story-label { color: #fff; font-size: 15px; text-align: center; margin-top: 4px;}
+    .story-block { text-align: center; display: inline-block; }
+    .top-right-btns {
+        display: flex;
+        gap: 12px;
     }
-
-    .tagline {
-        font-size: 1.1rem;
-        color: #333;
-        font-style: italic;
-        margin-top: -10px;
+    .otms-btn {
+        background: #ff3c38;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 8px 18px;
+        font-weight: bold;
+        font-size: 15px;
+        cursor: pointer;
+        box-shadow: 0 2px 12px #0001;
+        transition: background 0.2s;
     }
+    .otms-btn.secondary { background: #004aad; margin-left: 8px;}
     </style>
 """, unsafe_allow_html=True)
 
-
-# ---------------- Utility ----------------
-def img_to_base64(image_path):
-    if Path(image_path).exists():
-        with open(image_path, "rb") as img_file:
-            return base64.b64encode(img_file.read()).decode()
-    return None
-
-# ---------------- Hero Section ----------------
-left_logo = "otms_assets/otms_logo_white.png"
-right_logo = "otms_assets/otms_logo_white.png"
-left_b64 = img_to_base64(left_logo)
-right_b64 = img_to_base64(right_logo)
-
-st.markdown('<div class="hero">', unsafe_allow_html=True)
-
-if left_b64 and right_b64:
-    st.markdown(
-        f"""
-        <div style="display: flex; justify-content: center; align-items: center; gap: 2rem;">
-            <img src="data:image/png;base64,{left_b64}" style="height: 80px;">
-            <h1>ENGAGE</h1>
-            <img src="data:image/png;base64,{right_b64}" style="height: 80px;">
-        </div>
-        """, unsafe_allow_html=True
-    )
-
-st.markdown('<p class="tagline">Create. Share. Connect with the OTMS family.</p>', unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
-
-# ---------------- Share Section ----------------
-st.markdown('<div class="section">', unsafe_allow_html=True)
-st.markdown("### ✨ Share Your Creations")
-
-st.markdown('<div class="upload-box">', unsafe_allow_html=True)
-uploaded_file = st.file_uploader("Upload your OTMS recipe creation (image or video)", type=["png", "jpg", "jpeg", "mp4"])
-st.markdown("<p>Share your love of spices! Get featured on our community wall 🌟</p>", unsafe_allow_html=True)
-if uploaded_file:
-    st.success("Thanks for sharing! Our team will review it soon. 🌟")
-st.markdown('</div>', unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
-
-# ---------------- Follow & Tag Us ----------------
-st.markdown('<div class="section">', unsafe_allow_html=True)
-st.markdown("### 📱 Follow & Tag Us")
-st.markdown("""
-<div class="social-links">
-- Instagram: [@onetomanyspices](https://instagram.com/onetomanyspices)  
-- YouTube: [One to Many Spices Channel](https://youtube.com)  
-- Pinterest: [One to Many Pins](https://pinterest.com)  
-</div>
-""", unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
-
-# ---------------- Email Signup ----------------
-st.markdown('<div class="section">', unsafe_allow_html=True)
-st.markdown("### 📬 Join the Community")
-user_email = st.text_input("Enter your email to subscribe:")
-if user_email:
-    st.success("You're on the list! 🔔")
-st.markdown('</div>', unsafe_allow_html=True)
-
-# ---------------- Community Carousel ----------------
-st.markdown('<div class="section">', unsafe_allow_html=True)
-st.markdown("### 🌍 OTMS Community Highlights")
-
-community_posts = [
-    {"title": "Paneer Tikka by Anjali", "caption": "Cooked over campfire using GREEN Blend", "image": "otms_assets/community1.jpg"},
-    {"title": "Biriyani Day Vlog by Karthik", "caption": "Behind the scenes with OTMS", "image": "otms_assets/vlog1.jpg"},
-    {"title": "My Journey with OTMS", "caption": "A delicious year of discovery!", "image": "otms_assets/blog1.jpg"},
+# --- Top bar with logo + stories + buttons ---
+stories = [
+    {"avatar": "engage_assets/story1.png", "label": "Yashwant"},
+    {"avatar": "engage_assets/story2.jpg", "label": "Priya"},
+    {"avatar": "engage_assets/story3.png", "label": "Alex"},
+    {"avatar": "engage_assets/story4.jpg", "label": "Maria"},
+    {"avatar": "engage_assets/story5.jpg", "label": "Chef Ria"},
 ]
 
-titles = [p["title"] for p in community_posts]
-selected = st.selectbox("Select a featured post", titles)
-post = next((p for p in community_posts if p["title"] == selected), None)
-if post:
-    img_b64 = img_to_base64(post["image"])
-    if img_b64:
-        st.markdown(f"""
-            <div style="text-align: center;">
-                <img src="data:image/png;base64,{img_b64}" class="carousel-img">
-                <h4>{post['title']}</h4>
-                <p><i>{post['caption']}</i></p>
-            </div>
-        """, unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
+def avatar_base64(path):
+    try:
+        data = Path(path).read_bytes()
+        return base64.b64encode(data).decode()
+    except Exception:
+        return ""
 
-# ---------------- Auth Box ----------------
-st.markdown('<div class="section">', unsafe_allow_html=True)
-st.markdown("### 👤 Join the Creator Community")
+# ----------- Top Header Bar (logo + stories + buttons) -----------
+st.markdown("""
+    <div class="otms-header-bar">
+        <div class="otms-header-left">
+            <img src="otms_assets/cookfinity_logo_dark.png" class="cookfinity-logo"/>
+""", unsafe_allow_html=True)
 
-st.markdown('<div class="auth-box">', unsafe_allow_html=True)
-auth_mode = st.radio("Choose an option", ["Sign In", "Create Account"], horizontal=True)
+# Inline: Add all the stories right after the logo:
+stories_html = ""
+for s in stories:
+    b64 = avatar_base64(s["avatar"])
+    ext = Path(s["avatar"]).suffix[1:]
+    if b64:
+        stories_html += f'''
+        <div class="story-block">
+            <img class="story-avatar" src="data:image/{ext};base64,{b64}">
+            <div class="story-label">{s["label"]}</div>
+        </div>
+        '''
+    else:
+        stories_html += f'''
+        <div class="story-block">
+            <div class="story-avatar" style="background:#444;display:flex;align-items:center;justify-content:center;">?</div>
+            <div class="story-label">{s["label"]}</div>
+        </div>
+        '''
+st.markdown(stories_html, unsafe_allow_html=True)
 
-if auth_mode == "Sign In":
-    st.text_input("Email", key="signin_email")
-    st.text_input("Password", type="password", key="signin_password")
-    if st.button("Sign In"):
-        st.success("Signed in successfully! (Mockup)")
+st.markdown("""
+        </div>
+        <div class="top-right-btns">
+            <button class="otms-btn" onclick="window.location.href='/signin'">Sign In / Create Account</button>
+            <button class="otms-btn secondary" onclick="window.location.href='/collab'">COLLAB with OTMS</button>
+        </div>
+    </div>
+    <br>
+""", unsafe_allow_html=True)
 
-elif auth_mode == "Create Account":
-    st.text_input("Name", key="signup_name")
-    st.text_input("Email", key="signup_email")
-    st.text_input("Password", type="password", key="signup_password")
-    if st.button("Create Account"):
-        st.success("Account created! You're ready to ENGAGE ✨")
-st.markdown('</div>', unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
+# --- Example Feed Cards (same as before, for posts) ---
+posts = [
+    {
+        "username": "Yashwant",
+        "caption": "Tried the new RED blend on this masala chicken – Mindblowing!",
+        "media": "engage_assets/post1.jpg",
+        "media_type": "image",
+    },
+    {
+        "username": "Priya",
+        "caption": "Family dinner night. Thanks OTMS for making it easy 💛",
+        "media": "engage_assets/post2.jpg",
+        "media_type": "image",
+    },
+]
+
+st.write("")  # Small space below header bar
+
+for post in posts:
+    st.markdown(
+        """
+        <div style="
+            background: #19191a;
+            border-radius: 22px;
+            box-shadow: 0 2px 32px #0006;
+            margin: 0 auto 36px auto; max-width: 430px; padding: 25px 30px 16px 30px; color: #fff; position: relative;">
+        """,
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        f"<div style='font-weight: bold; font-size: 18px; color: #ffd700; margin-bottom: 3px;'>{post['username']}</div>",
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        f"<div style='color: #eee; font-size: 17px; margin-bottom: 11px;'>{post['caption']}</div>",
+        unsafe_allow_html=True,
+    )
+    if post["media_type"] == "image":
+        b64 = avatar_base64(post["media"])
+        ext = Path(post["media"]).suffix[1:]
+        if b64:
+            st.markdown(
+                f"<img style='border-radius: 18px; width: 100%; object-fit: cover; box-shadow: 0 2px 16px #0004; margin-bottom: 18px;' src='data:image/{ext};base64,{b64}'>",
+                unsafe_allow_html=True,
+            )
+        else:
+            st.warning("Image not found.")
+    elif post["media_type"] == "video":
+        video_path = post["media"]
+        if Path(video_path).exists():
+            st.video(str(video_path))
+        else:
+            st.warning("Video not found.")
+    st.markdown("""
+        <div style="display: flex; gap: 30px; margin-top: 11px; color: #ffd700; font-size: 19px; cursor: pointer;">
+            ❤️ Like &nbsp; 💬 Comment &nbsp; 🔄 Share
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+

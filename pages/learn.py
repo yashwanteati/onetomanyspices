@@ -2,81 +2,128 @@ import streamlit as st
 from pathlib import Path
 import base64
 
-# ---------------- Page Settings ----------------
-st.set_page_config(page_title="Learn | One to Many Spices", layout="wide")
+st.set_page_config(page_title="One to Many Spices", layout="wide")
 
 # ---------------- CSS Styling ----------------
+
 st.markdown("""
     <style>
-    [data-testid="stSidebar"] {
-        display: none;
+    [data-testid="stSidebar"] {display: none;}
+    .main, .stApp, body, .block-container {
+        background: #000 !important;
     }
-
-    .button-img {
-        border-radius: 20px;
-        transition: transform 0.3s ease-in-out;
-        cursor: pointer;
-    }
-
-    .button-img:hover {
-        transform: scale(1.1);
-    }
-
-    .menu-button {
-        text-align: center;
-        margin-top: 20px;
-    }
+    /* ... rest of your CSS ... */
     </style>
 """, unsafe_allow_html=True)
 
-# ---------------- Image Encoding Function ----------------
+st.markdown("""
+    <style>
+    [data-testid="stSidebar"] {display: none;}
+    body { background: #000 !important; }
+    .button-img {
+        border-radius: 50px;
+        transition: transform 0.3s ease-in-out;
+        cursor: pointer;
+    }
+    .button-img:hover {transform: scale(1.1);}
+    .menu-button {text-align: center; margin-top: 6px;background: transparent;box-shadow: none;}
+    .top-right-btns {
+        position: absolute; 
+        top: 15px; 
+        right: 64px; 
+        z-index: 999;
+        display: flex;
+        gap: 5px;
+    }
+    .otms-btn {
+        background: #ff3c38;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 8px 22px;
+        font-weight: bold;
+        font-size: 18px;
+        cursor: pointer;
+        box-shadow: 0 2px 12px #0001;
+        transition: background 0.2s;
+    }
+    .otms-btn.secondary {
+        background: #004aad;
+        margin-left: 6px;
+    }
+    /* Floating chat button */
+    .floating-chat {
+        position: fixed;
+        right: 32px;
+        bottom: 32px;
+        z-index: 9999;
+    }
+    .chat-circle-btn {
+        width: 66px; height: 66px;
+        background: #fddb52;
+        border-radius: 50%;
+        border: 2px solid #ff3c38;
+        box-shadow: 0 2px 12px #0003;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 38px;
+        color: #ff3c38;
+        font-weight: bold;
+        transition: transform 0.2s;
+    }
+    .chat-circle-btn:hover {transform: scale(1.1);}
+    .chat-popup {
+        position: fixed;
+        right: 120px;
+        bottom: 44px;
+        width: 330px;
+        background: white;
+        border-radius: 18px;
+        box-shadow: 0 4px 28px #0002;
+        padding: 16px;
+        z-index: 99999;
+        border: 1.5px solid #ff3c38;
+        animation: fadein .2s;
+    }
+    @keyframes fadein {from {opacity:0;transform:translateY(40px);} to {opacity:1;transform:none;}}
+    </style>
+""", unsafe_allow_html=True)
+
+# ---------------- Image Conversion ----------------
 def img_to_base64(path):
     try:
-        return base64.b64encode(Path(path).read_bytes()).decode()
+        image_bytes = Path(path).read_bytes()
+        return base64.b64encode(image_bytes).decode()
     except Exception:
         return ""
 
-
-# ---------------- Header Section (Logos + Title) ----------------
-header_cols = st.columns([1, 4, 1])
-with header_cols[0]:
-    st.image("otms_assets/otms_logo_light.png", use_container_width=True)
-
-with header_cols[1]:
-    st.markdown("""
-        <div style='text-align: center; margin-top: 05px;'>
-            <h1 style='font-size: 52px; margin-bottom: 5px;'>L  E  A  R  N</h1>
-            <h2 style='letter-spacing: 14px; font-size: 30px; margin-top: -20px;'>ABOUT  O  T  M  S</h2>
-            <h4 style='font-size: 22px; margin-top: 12px;'>
-                <span style='color: #FF3C38; margin-right: 12px;'>CREATE</span> 
-                <span style='color: #FDCB52; margin-right: 12px;'>RECIPES</span> 
-                <span style='color: #2ECC71; margin-right: 12px;'>THAT</span> 
-                <span style='color: #FF3C38;'>LET</span>
-                <span style='color: #FDCB52;'>MEMORIES</span>
-                <span style='color: #2ECC71;'>LAST</span>
-            </h4>
-            <h5 style='letter-spacing: 10px; font-size: 30px; margin-top: -10px;color: #C7AF6Bs;'>WORLD'S FIRST ONE STOP FOOD APP</h5>
-
-        </div>
-    """, unsafe_allow_html=True)
-
-with header_cols[2]:
-    st.image("otms_assets/cookfinity_logo_light.png", use_container_width=True)
-
-# ---------------- Brand Description ----------------
-st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+# ------------------- TOP RIGHT BUTTONS -------------------
 st.markdown("""
-    <div class="description">
-        One to Many Spices (OTMS) is on a mission to simplify cooking for everyone. 
-        With our curated, versatile spice blends, you can create restaurant-quality dishes right at home. 
-        Whether you’re a beginner or an expert, OTMS helps you cook with confidence, flavor, and joy — 
-        one spice blend, many memories.
+    <div class="top-right-btns">
+        <button class="otms-btn" onclick="window.location.href='/signin'">Sign In / Create Account</button>
+        <button class="otms-btn secondary" onclick="window.location.href='/collab'">COLLAB with OTMS</button>
     </div>
 """, unsafe_allow_html=True)
 
+# ---------------- Header Section (Logos + Title) ----------------
+header_cols = st.columns([10, 15, 10])
+
+with header_cols[0]:
+    st.image("otms_assets/otms_logo_dark.png", width=250)
+with header_cols[1]:
+    # Use st.markdown to control spacing below the banner
+    st.image("otms_assets/otms_banner.png", width=700)
+    st.markdown("<div style='margin-bottom: 0px;'></div>", unsafe_allow_html=True)  # Reduce gap
+with header_cols[2]:
+    st.image("otms_assets/cookfinity_logo_dark.png", width=250)
+
+
+
 # ---------------- Button Config ----------------
 buttons = [
-    {"label": "Indian Spices 101", "image": "otms_assets/learn_spices.png", "page": "learn_spices"},
+    {"label": "About OTMS", "image": "otms_assets/about_otms.png", "page": "about"},
     {"label": "Understanding OTMS Blends", "image": "otms_assets/learn_blends.png", "page": "learn_blends"},
     {"label": "Basic to Pro Cooking Techniques", "image": "otms_assets/learn_techniques.png", "page": "learn_techniques"},
     {"label": "Watch Recipe Videos", "image": "otms_assets/learn_videos.png", "page": "learn_videos"},

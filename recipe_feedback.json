@@ -1,0 +1,21 @@
+[
+  {
+    "feedbacks": [
+      {
+        "dish_name": "mushroom curry",
+        "feedback": "Excellent ",
+        "timestamp": "2025-07-14 00:08:26"
+      }
+    ]
+  },
+  {
+    "dish": "Mutton Pulao",
+    "feedback": "nice",
+    "when": "2025-09-02T22:27:30.177971"
+  },
+  {
+    "dish": "Hydrabadi Chicken Dum Biriyani",
+    "feedback": "excellent",
+    "when": "2025-09-02T23:06:04.150475"
+  }
+]
