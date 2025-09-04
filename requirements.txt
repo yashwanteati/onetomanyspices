@@ -1,4 +1,4 @@
-streamlit==1.26.0
-openai==1.14.3
-Pillow
-gTTS
+streamlit>=1.36
+openai==0.28.1
+pillow>=11.0.0
+gTTS>=2.5
