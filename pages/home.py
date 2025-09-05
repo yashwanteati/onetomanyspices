@@ -289,7 +289,7 @@ l3, r3 = st.columns([1,1], gap="large")
 
 with l3:
     learn_img = img_src("otms_assets/learn_card.png","learn OTMS")
-    dine_img  = img_src("otms_assets/engage_card.png","engage")  # ensure file exists
+    dine_img  = img_src("otms_assets/dine_card.png","engage")  # ensure file exists
     shop_img  = img_src("otms_assets/shop_card.png","shop")
     st.markdown(
         (
